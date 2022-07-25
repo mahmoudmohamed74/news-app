@@ -150,14 +150,7 @@ Widget tasksBuilder({required List<Map> tasks}) => ConditionalBuilder(
       builder: (context) => ListView.separated(
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) => builTaskItem(tasks[index], context),
-        separatorBuilder: (context, index) => Padding(
-          padding: const EdgeInsetsDirectional.only(start: 20),
-          child: Container(
-            width: 20.0,
-            height: 1,
-            color: Colors.grey[300],
-          ),
-        ),
+        separatorBuilder: (context, index) => myDivider(),
         itemCount: tasks.length,
       ),
       fallback: (context) => Center(
@@ -179,5 +172,64 @@ Widget tasksBuilder({required List<Map> tasks}) => ConditionalBuilder(
             ),
           ],
         ),
+      ),
+    );
+
+Widget myDivider() => Padding(
+      padding: const EdgeInsetsDirectional.only(start: 20),
+      child: Container(
+        width: 20.0,
+        height: 1,
+        color: Colors.grey[300],
+      ),
+    );
+
+Widget buildArticleItem() => Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                  image: NetworkImage(
+                      "https://tmssl.akamaized.net/images/foto/galerie/luka-modric-real-madrid-1571213383-26597.jpg?lm=1571213417"),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Container(
+              height: 120.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Title",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    "2021-04-02T19:00:00Z",
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
