@@ -178,13 +178,13 @@ Widget tasksBuilder({required List<Map> tasks}) => ConditionalBuilder(
 Widget myDivider() => Padding(
       padding: const EdgeInsetsDirectional.only(start: 20),
       child: Container(
-        width: 20.0,
+        width: double.infinity,
         height: 1,
         color: Colors.grey[300],
       ),
     );
 
-Widget buildArticleItem(article) => Padding(
+Widget buildArticleItem(article, context) => Padding(
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
@@ -211,11 +211,8 @@ Widget buildArticleItem(article) => Padding(
                   Expanded(
                     child: Text(
                       '${article['title']}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 4,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -233,13 +230,20 @@ Widget buildArticleItem(article) => Padding(
       ),
     );
 
-Widget articleBuilder(list) => ConditionalBuilder(
+Widget articleBuilder(
+  list,
+  context // bta3 text color
+  ,
+) =>
+    ConditionalBuilder(
       condition: list.isNotEmpty,
       builder: (context) => ListView.separated(
           physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) =>
-              buildArticleItem(list[index] // 3ayz t3rd eh?? 3naser list so easy
-                  ),
+          itemBuilder: (context, index) => buildArticleItem(
+                list[index], // 3ayz t3rd eh?? 3naser list so easy
+                context // bta3 text color
+                ,
+              ),
           separatorBuilder: (context, index) => myDivider(),
           itemCount: list.length
           // 3ddhm

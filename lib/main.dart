@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use
 
-import 'package:bloc/bloc.dart';
+import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/news_layout.dart';
 import 'package:first/layout/todo%20app/todo_layout.dart';
 import 'package:first/moduels/counter/Counter_Screen.dart';
@@ -11,9 +11,13 @@ import 'package:first/moduels/home/home_screen.dart';
 import 'package:first/moduels/login/loginscreen.dart';
 import 'package:first/moduels/users/users_screen.dart';
 import 'package:first/shared/bloc_observer.dart';
+import 'package:first/shared/cubit/cubit.dart';
+import 'package:first/shared/cubit/states.dart';
 import 'package:first/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 void main() {
   //put run app in runzoned
@@ -28,39 +32,98 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primarySwatch: Colors.amber,
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Colors.amber[600],
-          ), // 3shan t3adel f appbar & ****statusbar***
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: AppBarTheme(
-              backwardsCompatibility: false, //statusbar
-              systemOverlayStyle: SystemUiOverlayStyle(
-                //statusbar
-                statusBarColor: Colors.white, //statusbar
-                statusBarIconBrightness: Brightness.dark, //statusbar
+    return BlocProvider(
+      create: (context) => AppCubit(),
+      child: BlocConsumer<AppCubit, AppStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: //******************Light Theme*******************
+                ThemeData(
+              primarySwatch: Colors.amber,
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.amber[600],
+              ), // 3shan t3adel f appbar & ****statusbar***
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: AppBarTheme(
+                  titleSpacing: 20,
+                  backwardsCompatibility: false, //statusbar
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                    //statusbar
+                    statusBarColor: Colors.white, //statusbar
+                    statusBarIconBrightness: Brightness.dark, //statusbar
+                  ),
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  titleTextStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  iconTheme: IconThemeData(
+                    color: Colors.black,
+                  )),
+              bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                selectedItemColor: Colors.amber[600],
+                unselectedItemColor: Colors.grey,
+                elevation: 20,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Colors.white,
               ),
-              backgroundColor: Colors.white,
-              elevation: 0,
-              titleTextStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+              textTheme: TextTheme(
+                bodyText1: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: HexColor("#121212")),
               ),
-              iconTheme: IconThemeData(
-                color: Colors.black,
-              )),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            selectedItemColor: Colors.amber[600],
-            elevation: 20,
-            type: BottomNavigationBarType.fixed,
-          )),
-      home: Directionality(
-        textDirection: TextDirection.ltr, //بتعمل الابب مرايه غير الاوبجيكت
-        child: NewsLayout(),
+            ),
+
+            //******************Dark Theme*******************
+            darkTheme: ThemeData(
+              primarySwatch: Colors.amber,
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.amber[600],
+              ), // 3shan t3adel f appbar & ****statusbar***
+              scaffoldBackgroundColor: HexColor("#121212"),
+              appBarTheme: AppBarTheme(
+                  titleSpacing: 20,
+                  backwardsCompatibility: false, //statusbar
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                    //statusbar
+                    statusBarColor: HexColor("#121212"), //statusbar
+                    statusBarIconBrightness: Brightness.light, //statusbar
+                  ),
+                  backgroundColor: HexColor("#121212"),
+                  elevation: 0,
+                  titleTextStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  iconTheme: IconThemeData(
+                    color: Colors.white,
+                  )),
+              bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                selectedItemColor: Colors.amber[600],
+                unselectedItemColor: Colors.grey,
+                elevation: 20,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: HexColor("#121212"),
+              ),
+              textTheme: TextTheme(
+                bodyText1: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: HexColor("#F8F0E3"),
+                ),
+              ),
+            ),
+            themeMode:
+                AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+            home: NewsLayout(),
+          );
+        },
       ),
     );
   }

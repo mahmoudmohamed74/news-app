@@ -15,7 +15,11 @@ class SportsScreen extends StatelessWidget {
         //7atena ely list 7nshofha in var
         var list = NewsCubit.get(context).sports;
 
-        return articleBuilder(list);
+        return articleBuilder(
+          list,
+          context // bta3 text color
+          ,
+        );
       },
     );
   }
