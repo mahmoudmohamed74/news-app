@@ -1,6 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/cubit/states.dart';
 import 'package:first/shared/components/components.dart';
@@ -13,17 +12,10 @@ class BusinessScreen extends StatelessWidget {
     return BlocConsumer<NewsCubit, NewsStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return ConditionalBuilder(
-          condition: state is! NewsGetBusinessLoadingState,
-          builder: (context) => ListView.separated(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => buildArticleItem(),
-              separatorBuilder: (context, index) => myDivider(),
-              itemCount: 10),
-          fallback: (context) => Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+        //7atena ely list 7nshofha in var
+        var list = NewsCubit.get(context).business;
+
+        return articleBuilder(list);
       },
     );
   }

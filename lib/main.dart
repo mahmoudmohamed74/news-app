@@ -58,7 +58,10 @@ class MyApp extends StatelessWidget {
             elevation: 20,
             type: BottomNavigationBarType.fixed,
           )),
-      home: NewsLayout(),
+      home: Directionality(
+        textDirection: TextDirection.ltr, //بتعمل الابب مرايه غير الاوبجيكت
+        child: NewsLayout(),
+      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:first/shared/cubit/cubit.dart';
@@ -184,7 +184,7 @@ Widget myDivider() => Padding(
       ),
     );
 
-Widget buildArticleItem() => Padding(
+Widget buildArticleItem(article) => Padding(
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
@@ -194,8 +194,7 @@ Widget buildArticleItem() => Padding(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                  image: NetworkImage(
-                      "https://tmssl.akamaized.net/images/foto/galerie/luka-modric-real-madrid-1571213383-26597.jpg?lm=1571213417"),
+                  image: NetworkImage('${article['urlToImage']}'),
                   fit: BoxFit.cover),
             ),
           ),
@@ -211,7 +210,7 @@ Widget buildArticleItem() => Padding(
                 children: [
                   Expanded(
                     child: Text(
-                      "Title",
+                      '${article['title']}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -221,7 +220,7 @@ Widget buildArticleItem() => Padding(
                     ),
                   ),
                   Text(
-                    "2021-04-02T19:00:00Z",
+                    '${article['publishedAt']}',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -231,5 +230,21 @@ Widget buildArticleItem() => Padding(
             ),
           ),
         ],
+      ),
+    );
+
+Widget articleBuilder(list) => ConditionalBuilder(
+      condition: list.isNotEmpty,
+      builder: (context) => ListView.separated(
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) =>
+              buildArticleItem(list[index] // 3ayz t3rd eh?? 3naser list so easy
+                  ),
+          separatorBuilder: (context, index) => myDivider(),
+          itemCount: list.length
+          // 3ddhm
+          ),
+      fallback: (context) => Center(
+        child: CircularProgressIndicator(),
       ),
     );
