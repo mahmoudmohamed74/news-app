@@ -4,6 +4,7 @@ import 'package:first/moduels/archived_tasks/archived_tasks_screen.dart';
 import 'package:first/moduels/done_tasks/done_tasks_screen.dart';
 import 'package:first/moduels/new_tasks/new_tasks_screen.dart';
 import 'package:first/shared/cubit/states.dart';
+import 'package:first/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -132,8 +133,15 @@ class AppCubit extends Cubit<AppStates> {
   bool isDark = false;
   ThemeMode appMode = ThemeMode.dark;
 
-  void changeAppMode() {
-    isDark = !isDark;
-    emit(AppChangeModeState());
+  void changeAppMode({bool? fromShared}) {
+    if (fromShared != null) {
+      isDark = fromShared;
+      emit(AppChangeModeState());
+    } else {
+      isDark = !isDark;
+      CacheHelper.putBoolean(key: "isDark", value: isDark).then((value) {
+        emit(AppChangeModeState());
+      });
+    }
   }
 }
