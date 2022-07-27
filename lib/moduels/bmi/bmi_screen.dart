@@ -290,15 +290,17 @@ class _BmiScreenState extends State<BmiScreen> {
                 var result = wight / pow(hight / 100, 2);
                 print(result.round());
                 Navigator.push(
-                    context,
-                    //constructor shaiel data >>> screen tanya
-                    //tro7 tst2bl hnak f class w construcor
-                    MaterialPageRoute(
-                        builder: (context) => BmiResultScreen(
-                              result: result.round(),
-                              age: age,
-                              isMale: isMale,
-                            )));
+                  context,
+                  //constructor shaiel data >>> screen tanya
+                  //tro7 tst2bl hnak f class w construcor
+                  MaterialPageRoute(
+                    builder: (context) => BmiResultScreen(
+                      result: result.round(),
+                      age: age,
+                      isMale: isMale,
+                    ),
+                  ),
+                );
               },
               child: Text(
                 "CALCULATE",

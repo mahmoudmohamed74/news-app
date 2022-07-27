@@ -39,11 +39,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppCubit()
-        ..changeAppMode(
-          fromShared: isDark!,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NewsCubit()..getBusiness(),
         ),
+        BlocProvider(
+          create: (context) => AppCubit()
+            ..changeAppMode(
+              fromShared: isDark!,
+            ),
+        ),
+      ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {

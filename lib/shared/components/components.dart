@@ -252,3 +252,12 @@ Widget articleBuilder(
         child: CircularProgressIndicator(),
       ),
     );
+
+void navigateTo(context, widget) => Navigator.push(
+      context,
+      //constructor shaiel data >>> screen tanya
+      //tro7 tst2bl hnak f class w construcor
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
