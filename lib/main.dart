@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors
+// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/news_layout.dart';
@@ -20,22 +20,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // used for async & await 7uegy b3dha
-
+void main() {
   //put run app in runzoned
   BlocOverrides.runZoned(() async {
+    WidgetsFlutterBinding
+        .ensureInitialized(); // used for async & await 7uegy b3dha
     DioHelper.init();
     await CacheHelper.init();
-    bool isDark = CacheHelper.getBoolean(key: "isDark");
-    runApp(MyApp(isDark: isDark));
+    bool? isDark = CacheHelper.getBoolean(key: "isDark");
+    runApp(MyApp(isDark));
   }, blocObserver: MyBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
-  bool? isDark;
-  MyApp({this.isDark});
+  final bool? isDark;
+  MyApp(this.isDark);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AppCubit()
             ..changeAppMode(
-              fromShared: isDark!,
+              fromShared: isDark,
             ),
         ),
       ],
