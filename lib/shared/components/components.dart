@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:first/moduels/web%20view/web_view_screen.dart';
 import 'package:first/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 
@@ -184,57 +185,65 @@ Widget myDivider() => Padding(
       ),
     );
 
-Widget buildArticleItem(article, context) => Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                  image: NetworkImage('${article['urlToImage']}'),
-                  fit: BoxFit.cover),
-            ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Container(
-              height: 120.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      '${article['title']}',
-                      style: Theme.of(context).textTheme.bodyText1,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text(
-                    '${article['publishedAt']}',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+Widget buildArticleItem(article, context) => InkWell(
+      onTap: () {
+        navigateTo(
+          context,
+          WebViewScreen(article['url']),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                    image: NetworkImage('${article['urlToImage']}'),
+                    fit: BoxFit.cover),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Container(
+                height: 120.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${article['title']}',
+                        style: Theme.of(context).textTheme.bodyText1,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      '${article['publishedAt']}',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
 Widget articleBuilder(
-  list,
-  context // bta3 text color
-  ,
-) =>
+        list,
+        context // bta3 text color
+        ,
+        {isSearsh = false}) =>
     ConditionalBuilder(
       condition: list.isNotEmpty,
       builder: (context) => ListView.separated(
@@ -248,9 +257,11 @@ Widget articleBuilder(
           itemCount: list.length
           // 3ddhm
           ),
-      fallback: (context) => Center(
-        child: CircularProgressIndicator(),
-      ),
+      fallback: (context) => isSearsh
+          ? Container()
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
 
 void navigateTo(context, widget) => Navigator.push(

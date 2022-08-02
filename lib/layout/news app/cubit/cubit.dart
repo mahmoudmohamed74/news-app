@@ -49,10 +49,12 @@ class NewsCubit extends Cubit<NewsStates> {
   List<dynamic> business = [];
 
   void getBusiness() {
+    //داتا البزنيس
     emit(NewsGetBusinessLoadingState());
     if (business.isEmpty) {
       // for loading one time at beging
       DioHelper.getData(
+        // الي هتجيب الداتا للبيزنس
         url: 'v2/top-headlines',
         query: {
           'country': 'eg',
