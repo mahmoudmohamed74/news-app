@@ -1,8 +1,9 @@
 // ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_print, must_be_immutable
 
 //idea of statefull widget
-import 'package:first/moduels/counter/cubit/cubit.dart';
-import 'package:first/moduels/counter/cubit/states.dart';
+
+import 'package:first/moduels/counter_app/counter/cubit/cubit.dart';
+import 'package:first/moduels/counter_app/counter/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

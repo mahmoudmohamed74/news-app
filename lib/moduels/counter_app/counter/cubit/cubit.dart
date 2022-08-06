@@ -1,4 +1,4 @@
-import 'package:first/moduels/counter/cubit/states.dart';
+import 'package:first/moduels/counter_app/counter/cubit/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // 1 b3ml parent class  ha form mnh states bt3ty => states.dart

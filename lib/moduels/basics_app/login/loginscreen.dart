@@ -69,25 +69,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15.0,
                   ),
                   defaultFormField(
-                      controller: passwordController,
-                      type: TextInputType.visiblePassword,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return "$value must not be empty";
-                        }
-                        return null;
-                      },
-                      lable: "password",
-                      prefix: Icons.lock,
-                      suffix: isPasswordShow
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      isPassword: isPasswordShow,
-                      suffixPressed: () {
-                        setState(() {
-                          isPasswordShow = !isPasswordShow;
-                        });
-                      }),
+                    controller: passwordController,
+                    type: TextInputType.visiblePassword,
+                    validate: (value) {
+                      if (value!.isEmpty) {
+                        return "$value must not be empty";
+                      }
+                      return null;
+                    },
+                    lable: "password",
+                    prefix: Icons.lock,
+                    suffix: isPasswordShow
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    isPassword: isPasswordShow,
+                    suffixPressed: () {
+                      setState(() {
+                        isPasswordShow = !isPasswordShow;
+                      });
+                    },
+                  ),
                   SizedBox(
                     height: 20.0,
                   ),

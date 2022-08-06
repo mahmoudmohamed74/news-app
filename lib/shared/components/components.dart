@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:first/moduels/web%20view/web_view_screen.dart';
+import 'package:first/moduels/news_app/web%20view/web_view_screen.dart';
 import 'package:first/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 
@@ -82,6 +82,17 @@ Widget defaultFormField({
       obscureText: isPassword,
     );
 
+Widget defaultTextButton({
+  required Function? function,
+  required String text,
+}) =>
+    TextButton(
+        onPressed: () {
+          function!();
+        },
+        child: Text(
+          text.toUpperCase(),
+        ));
 Widget builTaskItem(Map model, context) => Dismissible(
       key: Key(
         model['id'].toString(),
@@ -271,4 +282,14 @@ void navigateTo(context, widget) => Navigator.push(
       MaterialPageRoute(
         builder: (context) => widget,
       ),
+    );
+
+void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
+    context,
+    //constructor shaiel data >>> screen tanya
+    //tro7 tst2bl hnak f class w construcor
+    MaterialPageRoute(
+      builder: (context) => widget,
+    ),
+    (Route<dynamic> route) => false //save historty route
     );

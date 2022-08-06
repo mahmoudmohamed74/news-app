@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:first/layout/news%20app/cubit/states.dart';
-import 'package:first/moduels/business/business_screen.dart';
-import 'package:first/moduels/science/science_screen.dart';
-import 'package:first/moduels/sports/sports_screen.dart';
+import 'package:first/moduels/news_app/business/business_screen.dart';
+import 'package:first/moduels/news_app/science/science_screen.dart';
+import 'package:first/moduels/news_app/sports/sports_screen.dart';
+
 import 'package:first/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

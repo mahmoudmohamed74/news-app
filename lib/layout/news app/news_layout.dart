@@ -2,7 +2,7 @@
 
 import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/cubit/states.dart';
-import 'package:first/moduels/search/search_screen.dart';
+import 'package:first/moduels/news_app/search/search_screen.dart';
 import 'package:first/shared/components/components.dart';
 import 'package:first/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';

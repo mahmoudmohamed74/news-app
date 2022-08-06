@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:first/moduels/archived_tasks/archived_tasks_screen.dart';
-import 'package:first/moduels/done_tasks/done_tasks_screen.dart';
-import 'package:first/moduels/new_tasks/new_tasks_screen.dart';
+import 'package:first/moduels/todo_app/archived_tasks/archived_tasks_screen.dart';
+import 'package:first/moduels/todo_app/done_tasks/done_tasks_screen.dart';
+import 'package:first/moduels/todo_app/new_tasks/new_tasks_screen.dart';
 import 'package:first/shared/cubit/states.dart';
 import 'package:first/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
