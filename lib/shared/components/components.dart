@@ -90,9 +90,11 @@ Widget defaultTextButton({
         onPressed: () {
           function!();
         },
-        child: Text(
-          text.toUpperCase(),
-        ));
+        child: Text(text.toUpperCase(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            )));
 Widget builTaskItem(Map model, context) => Dismissible(
       key: Key(
         model['id'].toString(),
