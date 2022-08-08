@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme, //******************Light Theme**********
 
-            darkTheme: darkTheme, //******************Dark Theme**********
+            // darkTheme: lightTheme, //******************Dark Theme**********
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: OnBoardingScreen(),

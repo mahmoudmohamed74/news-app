@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:first/models/shop_app/login_model.dart';
 import 'package:first/moduels/shop_app/login/cubit/states.dart';
 import 'package:first/shared/network/end_points.dart';
 import 'package:first/shared/network/remote/dio_helper.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ShopLoginCuibt extends Cubit<ShopLoginStates> {
   ShopLoginCuibt() : super(ShopLoginInitalState());
   static ShopLoginCuibt get(context) => BlocProvider.of(context);
+  ShopLoginModel? loginModel;
 
   void userLogin({
     required String email,
@@ -23,13 +25,17 @@ class ShopLoginCuibt extends Cubit<ShopLoginStates> {
       },
     ).then((value) {
       print(value.data);
+      loginModel = ShopLoginModel.fromJson(value.data!);
+
       emit(
-        ShopLoginSuccessState(),
+        ShopLoginSuccessState(loginModel!),
       );
     }).catchError((error) {
       emit(
         ShopLoginErorrState(error.toString()),
       );
+      print("starrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      print(error.toString());
     });
   }
 

@@ -37,7 +37,7 @@ class DioHelper {
     // method ely 7tpost data
     required String url,
     Map<String, dynamic>? query,
-    required Map<String, dynamic>? data,
+    required Map<String, dynamic> data,
     String lang = "ar",
     String? token,
   }) async {
