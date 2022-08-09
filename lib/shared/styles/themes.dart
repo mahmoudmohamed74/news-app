@@ -71,7 +71,7 @@ ThemeData lightTheme = ThemeData(
         color: Colors.black,
       )),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    selectedItemColor: Colors.amber,
+    selectedItemColor: defaultColor,
     unselectedItemColor: Colors.grey,
     elevation: 20,
     type: BottomNavigationBarType.fixed,
@@ -79,7 +79,10 @@ ThemeData lightTheme = ThemeData(
   ),
   textTheme: TextTheme(
     bodyText1: TextStyle(
-        fontSize: 18, fontWeight: FontWeight.w600, color: HexColor("#121212")),
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: HexColor("#121212"),
+    ),
   ),
   fontFamily: "SquarePeg",
 );

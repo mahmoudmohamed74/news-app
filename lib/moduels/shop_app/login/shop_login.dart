@@ -1,13 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, avoid_print
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:first/layout/shop%20app/shop_layout.dart';
 import 'package:first/moduels/shop_app/login/cubit/cubit.dart';
 import 'package:first/moduels/shop_app/login/cubit/states.dart';
 import 'package:first/moduels/shop_app/register/shop_register_screen.dart';
 import 'package:first/shared/components/components.dart';
+import 'package:first/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ShopLoginScreen extends StatelessWidget {
   String test = "starrrrrrrrrrrrrrrrrrrrrr";
@@ -24,30 +25,30 @@ class ShopLoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is ShopLoginSuccessState) {
             if (state.loginModel.status!) {
-              // Fluttertoast.showToast(
-              //   msg: state.loginModel.message!,
-              //   toastLength: Toast.LENGTH_LONG,
-              //   gravity: ToastGravity.BOTTOM,
-              //   timeInSecForIosWeb: 1,
-              //   backgroundColor: Colors.green,
-              //   textColor: Colors.white,
-              //   fontSize: 16.0,
-              // );
+              showToast(
+                // text: "Login done successfully",
+                text: state.loginModel.message.toString(),
+                state: ToastStates.SUCCESS,
+              );
               print(state.loginModel.message);
               print(state.loginModel.data!.token);
-              print(test);
+              CacheHelper.saveData(
+                key: "token",
+                value: state.loginModel.data!.token,
+              ).then((value) {
+                navigateAndFinish(
+                  context,
+                  ShopLayout(),
+                );
+              });
             } else {
-              // print(state.loginModel.message);
-              // Fluttertoast.showToast(
-              //   msg: state.loginModel.message!,
-              //   toastLength: Toast.LENGTH_LONG,
-              //   gravity: ToastGravity.BOTTOM,
-              //   timeInSecForIosWeb: 1,
-              //   backgroundColor: Colors.red,
-              //   textColor: Colors.white,
-              //   fontSize: 16.0,
-              // );
-              // print(test);
+              print(state.loginModel.message);
+
+              showToast(
+                // text: "Incorrect email format",
+                text: state.loginModel.message.toString(),
+                state: ToastStates.ERROR,
+              );
             }
           }
         },

@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ShopLoginCuibt extends Cubit<ShopLoginStates> {
   ShopLoginCuibt() : super(ShopLoginInitalState());
   static ShopLoginCuibt get(context) => BlocProvider.of(context);
-  ShopLoginModel? loginModel;
+  late ShopLoginModel loginModel;
 
   void userLogin({
     required String email,
@@ -28,7 +28,7 @@ class ShopLoginCuibt extends Cubit<ShopLoginStates> {
       loginModel = ShopLoginModel.fromJson(value.data!);
 
       emit(
-        ShopLoginSuccessState(loginModel!),
+        ShopLoginSuccessState(loginModel),
       );
     }).catchError((error) {
       emit(

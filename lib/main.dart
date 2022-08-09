@@ -1,8 +1,12 @@
-// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print
 
 import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/news_layout.dart';
+import 'package:first/layout/shop%20app/cubit/cubit.dart';
+import 'package:first/layout/shop%20app/shop_layout.dart';
 import 'package:first/layout/todo%20app/todo_layout.dart';
+// import 'package:first/moduels/basics_app/login/loginscreen.dart';
+import 'package:first/moduels/shop_app/login/shop_login.dart';
 import 'package:first/moduels/shop_app/on_boarding/on_boarding_screen.dart';
 
 import 'package:first/shared/bloc_observer.dart';
@@ -23,14 +27,30 @@ void main() {
         .ensureInitialized(); // used for async & await 7uegy b3dha
     DioHelper.init();
     await CacheHelper.init();
-    bool? isDark = CacheHelper.getBoolean(key: "isDark");
-    runApp(MyApp(isDark));
+    bool? isDark = CacheHelper.getData(key: "isDark");
+    Widget widget;
+    bool? onBoarding = CacheHelper.getData(key: "onBoarding");
+    String? token = CacheHelper.getData(key: "token");
+    if (onBoarding != null) {
+      if (token != null) {
+        widget = ShopLayout();
+      } else {
+        widget = ShopLoginScreen();
+      }
+    } else {
+      widget = OnBoardingScreen();
+    }
+    runApp(MyApp(
+      isDark: isDark,
+      startWidget: widget,
+    ));
   }, blocObserver: MyBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
   final bool? isDark;
-  MyApp(this.isDark);
+  final Widget? startWidget;
+  MyApp({this.isDark, this.startWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +68,9 @@ class MyApp extends StatelessWidget {
               fromShared: isDark,
             ),
         ),
+        BlocProvider(
+          create: (context) => ShopCubit()..getHomeData(),
+        ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
@@ -59,7 +82,7 @@ class MyApp extends StatelessWidget {
             // darkTheme: lightTheme, //******************Dark Theme**********
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
-            home: OnBoardingScreen(),
+            home: startWidget,
           );
         },
       ),
