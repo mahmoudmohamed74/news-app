@@ -31,11 +31,11 @@ class ShopLoginCuibt extends Cubit<ShopLoginStates> {
         ShopLoginSuccessState(loginModel),
       );
     }).catchError((error) {
+      print("starrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      print(error.toString());
       emit(
         ShopLoginErorrState(error.toString()),
       );
-      print("starrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print(error.toString());
     });
   }
 

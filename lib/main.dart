@@ -1,10 +1,11 @@
-// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print
+// ignore_for_file: unused_import, prefer_const_constructors, deprecated_member_use, must_be_immutable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, unnecessary_null_comparison
 
 import 'package:first/layout/news%20app/cubit/cubit.dart';
 import 'package:first/layout/news%20app/news_layout.dart';
 import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/shop_layout.dart';
 import 'package:first/layout/todo%20app/todo_layout.dart';
+import 'package:first/moduels/basics_app/login/loginscreen.dart';
 // import 'package:first/moduels/basics_app/login/loginscreen.dart';
 import 'package:first/moduels/shop_app/login/shop_login.dart';
 import 'package:first/moduels/shop_app/on_boarding/on_boarding_screen.dart';
@@ -20,6 +21,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'shared/components/constants.dart';
+
 void main() {
   //put run app in runzoned
   BlocOverrides.runZoned(() async {
@@ -28,9 +31,9 @@ void main() {
     DioHelper.init();
     await CacheHelper.init();
     bool? isDark = CacheHelper.getData(key: "isDark");
-    Widget widget;
+    Widget? widget;
     bool? onBoarding = CacheHelper.getData(key: "onBoarding");
-    String? token = CacheHelper.getData(key: "token");
+    print(token.toString());
     if (onBoarding != null) {
       if (token != null) {
         widget = ShopLayout();
@@ -71,7 +74,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ShopCubit()
             ..getHomeData()
-            ..getCategories(),
+            ..getCategories()
+            ..getFavorites(),
         ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(

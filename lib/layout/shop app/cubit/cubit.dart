@@ -1,7 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'package:first/layout/shop%20app/cubit/states.dart';
 import 'package:first/models/shop_app/categories_model.dart';
+import 'package:first/models/shop_app/change_favorites_model.dart';
+import 'package:first/models/shop_app/favoraites_model.dart';
 import 'package:first/models/shop_app/home_model.dart';
 import 'package:first/moduels/shop_app/categories/categories_screen.dart';
 import 'package:first/moduels/shop_app/favorites/favorites_screen.dart';
@@ -29,16 +31,21 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   HomeModel? homeModel;
+  Map<int, bool> fave = {};
   void getHomeData() {
     emit(ShopLoadingHomeDataState());
     DioHelper.getData(
       url: HOME,
       token: token,
     ).then((value) {
-      emit(ShopSuccessHomeDataState());
       homeModel = HomeModel.fromJson(value.data);
-      printFullText(homeModel!.data!.banners[0].image.toString());
-      print(homeModel!.data);
+      // printFullText(homeModel!.data!.banners[0].image.toString());
+      // print(homeModel!.data);
+      homeModel!.data!.products.forEach((element) {
+        fave.addAll({element.id!: element.inFavorites!});
+        emit(ShopSuccessHomeDataState());
+      });
+      print(fave.toString());
     }).catchError((error) {
       print(error.toString());
       emit(ShopErrorHomeDataState(error));
@@ -51,11 +58,56 @@ class ShopCubit extends Cubit<ShopStates> {
       url: GET_CATEGORIES,
       token: token,
     ).then((value) {
-      emit(ShopSuccessCategoriesDataState());
       categoriesModel = CategoriesModel.fromJson(value.data);
+      emit(ShopSuccessCategoriesDataState());
     }).catchError((error) {
       print(error.toString());
-      emit(ShopErrorCategoriesDataState(error));
+      emit(ShopErrorCategoriesDataState(error.toString()));
+    });
+  }
+
+  ChangeFavoritesModel? changeFavoritesModel;
+  void changeFavorties(int? productId) {
+    fave[productId!] = !fave[productId]!; // تغير
+    emit(ShopChangeFavoritesState()); //يسمع ف لحظتها مينتظرش يدخل ال success
+
+    DioHelper.postData(
+      url: FAVORITES,
+      data: {
+        'product_id': productId,
+      },
+      token: token,
+    ).then((value) {
+      changeFavoritesModel = ChangeFavoritesModel.fromJson(value.data);
+      if (!changeFavoritesModel!.status!) {
+        fave[productId] = !fave[productId]!; //ترجعه
+        // lw 7asl succsess f el servar , error f el data(message = false)
+      } else {
+        getFavorites();
+      }
+      print(value.data);
+      emit(ShopSuccessChangeFavoritesState(changeFavoritesModel!));
+    }).catchError((error) {
+      fave[productId] = !fave[productId]!; // ترجعه
+
+      print(error.toString());
+      emit(ShopErrorChangeFavoritesState(error.toString()));
+    });
+  }
+
+  FavoritesModel? favoritesModel;
+  void getFavorites() {
+    emit(ShopLoadingGetFavoritesDataState());
+    DioHelper.getData(
+      url: FAVORITES,
+      token: token,
+    ).then((value) {
+      favoritesModel = FavoritesModel.fromJson(value.data);
+      printFullText(value.data.toString());
+      emit(ShopSuccessGetFavoritesDataState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetFavoritesDataState(error.toString()));
     });
   }
 }

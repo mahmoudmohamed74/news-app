@@ -3,6 +3,7 @@
 import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/cubit/states.dart';
 import 'package:first/moduels/news_app/search/search_screen.dart';
+import 'package:first/moduels/shop_app/login/shop_login.dart';
 import 'package:first/shared/components/components.dart';
 
 import 'package:flutter/material.dart';
@@ -28,6 +29,17 @@ class ShopLayout extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.search,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    navigateAndFinish(
+                      context,
+                      ShopLoginScreen(),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.back_hand,
                   ),
                 )
               ],

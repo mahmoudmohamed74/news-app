@@ -34,7 +34,7 @@ class ShopLoginScreen extends StatelessWidget {
               print(state.loginModel.data!.token);
               CacheHelper.saveData(
                 key: "token",
-                value: state.loginModel.data!.token,
+                value: state.loginModel.data!.token!,
               ).then((value) {
                 navigateAndFinish(
                   context,
@@ -42,7 +42,7 @@ class ShopLoginScreen extends StatelessWidget {
                 );
               });
             } else {
-              print(state.loginModel.message);
+              print(state.loginModel.message!);
 
               showToast(
                 // text: "Incorrect email format",

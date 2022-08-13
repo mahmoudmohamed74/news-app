@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, unused_import
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -6,6 +6,7 @@ import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/cubit/states.dart';
 import 'package:first/models/shop_app/categories_model.dart';
 import 'package:first/models/shop_app/home_model.dart';
+import 'package:first/shared/components/components.dart';
 import 'package:first/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,14 +15,27 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ShopSuccessChangeFavoritesState) {
+          if (!state.model.status!) {
+            showToast(
+              text: state.model.message.toString(),
+              // text: "not auth",
+              state: ToastStates.ERROR,
+            );
+            // print("XOXOXOXOXOXOXOXOXOOXXOOXOXOX");
+          }
+        }
+      },
       builder: (context, state) {
         return ConditionalBuilder(
           condition: ShopCubit.get(context).homeModel != null &&
               ShopCubit.get(context).categoriesModel != null,
           builder: (context) => productsBuilder(
-              ShopCubit.get(context).homeModel!,
-              ShopCubit.get(context).categoriesModel!),
+            ShopCubit.get(context).homeModel!,
+            ShopCubit.get(context).categoriesModel!,
+            context,
+          ),
           fallback: (context) => Center(
             child: CircularProgressIndicator(),
           ),
@@ -32,7 +46,7 @@ class ProductsScreen extends StatelessWidget {
 
 //هتبني كل الداتا الي ف الهوم
   Widget productsBuilder(
-          HomeModel homemodel, CategoriesModel categoriesModel) =>
+          HomeModel homemodel, CategoriesModel categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -136,6 +150,7 @@ class ProductsScreen extends StatelessWidget {
                   homemodel.data!.products.length,
                   (index) => buildGridProduct(
                     homemodel.data!.products[index],
+                    context,
                   ),
                 ),
               ),
@@ -172,7 +187,8 @@ class ProductsScreen extends StatelessWidget {
         ],
       );
   //هتبني الليست الي هتستقبل الداتا بتاعت البروديكتس
-  Widget buildGridProduct(ProductModel model) => Container(
+
+  Widget buildGridProduct(ProductModel model, context) => Container(
         color: Colors.white,
         child: Column(
           children: [
@@ -244,11 +260,21 @@ class ProductsScreen extends StatelessWidget {
                         ),
                       Spacer(),
                       IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.star_border,
-                          size: 15,
+                        onPressed: () {
+                          ShopCubit.get(context).changeFavorties(model.id!);
+                          print(model.id!);
+                        },
+                        icon: CircleAvatar(
+                          radius: 15,
+                          backgroundColor:
+                              ShopCubit.get(context).fave[model.id!]!
+                                  ? defaultColor
+                                  : Colors.grey,
+                          child: Icon(
+                            Icons.star_border,
+                            size: 15,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
