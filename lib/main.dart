@@ -25,29 +25,33 @@ import 'shared/components/constants.dart';
 
 void main() {
   //put run app in runzoned
-  BlocOverrides.runZoned(() async {
-    WidgetsFlutterBinding
-        .ensureInitialized(); // used for async & await 7uegy b3dha
-    DioHelper.init();
-    await CacheHelper.init();
-    bool? isDark = CacheHelper.getData(key: "isDark");
-    Widget? widget;
-    bool? onBoarding = CacheHelper.getData(key: "onBoarding");
-    print(token.toString());
-    if (onBoarding != null) {
-      if (token != null) {
-        widget = ShopLayout();
+  BlocOverrides.runZoned(
+    () async {
+      WidgetsFlutterBinding
+          .ensureInitialized(); // used for async & await 7uegy b3dha
+      DioHelper.init();
+      await CacheHelper.init();
+      bool? isDark = CacheHelper.getData(key: "isDark");
+      Widget? widget;
+      bool? onBoarding = CacheHelper.getData(key: "onBoarding");
+      print(token.toString());
+
+      if (onBoarding != null) {
+        if (token != null) {
+          widget = ShopLayout();
+        } else {
+          widget = ShopLoginScreen();
+        }
       } else {
-        widget = ShopLoginScreen();
+        widget = OnBoardingScreen();
       }
-    } else {
-      widget = OnBoardingScreen();
-    }
-    runApp(MyApp(
-      isDark: isDark,
-      startWidget: widget,
-    ));
-  }, blocObserver: MyBlocObserver());
+      runApp(MyApp(
+        isDark: isDark,
+        startWidget: widget,
+      ));
+    },
+    blocObserver: MyBlocObserver(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -75,7 +79,8 @@ class MyApp extends StatelessWidget {
           create: (context) => ShopCubit()
             ..getHomeData()
             ..getCategories()
-            ..getFavorites(),
+            ..getFavorites()
+            ..getUserData(),
         ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(

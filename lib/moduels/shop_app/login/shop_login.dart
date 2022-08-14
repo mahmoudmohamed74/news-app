@@ -1,24 +1,27 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, avoid_print
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/shop_layout.dart';
 import 'package:first/moduels/shop_app/login/cubit/cubit.dart';
 import 'package:first/moduels/shop_app/login/cubit/states.dart';
 import 'package:first/moduels/shop_app/register/shop_register_screen.dart';
 import 'package:first/shared/components/components.dart';
+import 'package:first/shared/components/constants.dart';
 import 'package:first/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShopLoginScreen extends StatelessWidget {
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   String test = "starrrrrrrrrrrrrrrrrrrrrr";
   var formKey = GlobalKey<FormState>(); // create valdaition
 
   bool isPasswordShow = false;
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
+    var cubit = ShopCubit.get(context);
     return BlocProvider(
       create: (context) => ShopLoginCuibt(),
       child: BlocConsumer<ShopLoginCuibt, ShopLoginStates>(
@@ -32,15 +35,26 @@ class ShopLoginScreen extends StatelessWidget {
               );
               print(state.loginModel.message);
               print(state.loginModel.data!.token);
+
               CacheHelper.saveData(
                 key: "token",
                 value: state.loginModel.data!.token!,
-              ).then((value) {
-                navigateAndFinish(
-                  context,
-                  ShopLayout(),
-                );
-              });
+              ).then(
+                (value) {
+                  token = state.loginModel.data!.token;
+                  ShopCubit.get(context) // to update user’s data at every login
+                    ..getHomeData()
+                    ..getCategories()
+                    ..getFavorites()
+                    ..getUserData();
+                  cubit.currentIndex = 0;
+
+                  navigateAndFinish(
+                    context,
+                    ShopLayout(),
+                  );
+                },
+              );
             } else {
               print(state.loginModel.message!);
 
@@ -81,22 +95,23 @@ class ShopLoginScreen extends StatelessWidget {
                           height: 30,
                         ),
                         defaultFormField(
-                            controller: emailController,
-                            type: TextInputType.emailAddress,
-                            validate: (value) {
-                              if (value!.isEmpty) {
-                                return "email  address  must  not  be  empty";
-                              }
-                              return null;
-                            },
-                            lable: "Email  Address",
-                            prefix: Icons.email),
+                          controller: emailController,
+                          type: TextInputType.emailAddress,
+                          validate: (value) {
+                            if (value!.isEmpty) {
+                              return "email  address  must  not  be  empty";
+                            }
+                            return null;
+                          },
+                          lable: "Email  Address",
+                          prefix: Icons.email,
+                        ),
                         SizedBox(
                           height: 20,
                         ),
                         defaultFormField(
                           controller: passwordController,
-                          type: TextInputType.emailAddress,
+                          type: TextInputType.visiblePassword,
                           validate: (value) {
                             if (value!.isEmpty) {
                               return "password  is  too  short";

@@ -5,6 +5,7 @@ import 'package:first/models/shop_app/categories_model.dart';
 import 'package:first/models/shop_app/change_favorites_model.dart';
 import 'package:first/models/shop_app/favoraites_model.dart';
 import 'package:first/models/shop_app/home_model.dart';
+import 'package:first/models/shop_app/login_model.dart';
 import 'package:first/moduels/shop_app/categories/categories_screen.dart';
 import 'package:first/moduels/shop_app/favorites/favorites_screen.dart';
 import 'package:first/moduels/shop_app/products/products_screen.dart';
@@ -103,11 +104,47 @@ class ShopCubit extends Cubit<ShopStates> {
       token: token,
     ).then((value) {
       favoritesModel = FavoritesModel.fromJson(value.data);
-      printFullText(value.data.toString());
+      // printFullText(value.data.toString());
       emit(ShopSuccessGetFavoritesDataState());
     }).catchError((error) {
       print(error.toString());
       emit(ShopErrorGetFavoritesDataState(error.toString()));
+    });
+  }
+
+  ShopLoginModel? userModel;
+  void getUserData() {
+    emit(ShopLoadingGetUserDataState());
+    DioHelper.getData(
+      url: PROFILE,
+      token: token,
+    ).then((value) {
+      userModel = ShopLoginModel.fromJson(value.data);
+      // printFullText(userModel!.data!.name.toString());
+      emit(ShopSuccessGetUserDataState(userModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetUserDataState(error.toString()));
+    });
+  }
+
+  void updateUserData({
+    required String? name,
+    required String? email,
+    required String? phone,
+  }) {
+    emit(ShopLoadingUpdateUserDataState());
+    DioHelper.putData(url: UPDATE_PROFILE, token: token, data: {
+      "name": name,
+      "email": email,
+      "phone": phone,
+    }).then((value) {
+      userModel = ShopLoginModel.fromJson(value.data);
+      // printFullText(userModel!.data!.name.toString());
+      emit(ShopSuccessUpdateUserDataState(userModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorUpdateUserDataState(error.toString()));
     });
   }
 }

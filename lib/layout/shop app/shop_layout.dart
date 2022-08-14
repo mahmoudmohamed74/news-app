@@ -2,12 +2,13 @@
 
 import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/cubit/states.dart';
-import 'package:first/moduels/news_app/search/search_screen.dart';
 import 'package:first/moduels/shop_app/login/shop_login.dart';
 import 'package:first/shared/components/components.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../moduels/shop_app/search/search_screen.dart';
 
 class ShopLayout extends StatelessWidget {
   @override
