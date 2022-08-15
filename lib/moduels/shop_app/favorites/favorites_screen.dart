@@ -3,7 +3,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/layout/shop%20app/cubit/states.dart';
-import 'package:first/models/shop_app/favoraites_model.dart';
 import 'package:first/shared/components/components.dart';
 import 'package:first/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class FavoritesScreen extends StatelessWidget {
           condition: state is! ShopLoadingGetFavoritesDataState,
           builder: (context) => ListView.separated(
             itemBuilder: (context, index) => buildFavItem(
-              ShopCubit.get(context).favoritesModel!.data!.fave[index],
+              ShopCubit.get(context).favoritesModel!.data!.fave[index].product!,
               context,
             ),
             separatorBuilder: (context, index) => myDivider(),
@@ -33,7 +32,7 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 
-  Widget buildFavItem(FavoritesData model, context) => Padding(
+  Widget buildFavItem(model, context) => Padding(
         padding: const EdgeInsets.all(20.0),
         child: Container(
           height: 120,
@@ -44,12 +43,12 @@ class FavoritesScreen extends StatelessWidget {
                 children: [
                   Image(
                     image: NetworkImage(
-                      model.product!.image!,
+                      model.image!,
                     ),
                     width: 120,
                     height: 120,
                   ),
-                  if (model.product!.discount != 0)
+                  if (model.discount != 0)
                     Container(
                       color: Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: 5),
@@ -71,7 +70,7 @@ class FavoritesScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      model.product!.name!,
+                      model.name!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -84,7 +83,7 @@ class FavoritesScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "${model.product!.price.round()} \$",
+                          "${model.price.round()} \$",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -99,7 +98,7 @@ class FavoritesScreen extends StatelessWidget {
                         ),
                         if (1 != 0)
                           Text(
-                            "${model.product!.oldPrice.round()} \$",
+                            "${model.oldPrice.round()} \$",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -113,14 +112,13 @@ class FavoritesScreen extends StatelessWidget {
                         Spacer(),
                         IconButton(
                           onPressed: () {
-                            ShopCubit.get(context)
-                                .changeFavorties(model.product!.id!);
-                            print(model.product!.id!);
+                            ShopCubit.get(context).changeFavorties(model.id!);
+                            print(model.id!);
                           },
                           icon: CircleAvatar(
                             radius: 15,
                             backgroundColor:
-                                ShopCubit.get(context).fave[model.product!.id!]!
+                                ShopCubit.get(context).fave[model.id!]!
                                     ? defaultColor
                                     : Colors.grey,
                             child: Icon(

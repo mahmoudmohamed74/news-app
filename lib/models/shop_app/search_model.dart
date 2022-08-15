@@ -12,7 +12,7 @@ class SearchModel {
 
 class Data {
   int? currentPage;
-  List<Product> search = [];
+  List<Product>? search = [];
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -28,7 +28,7 @@ class Data {
     currentPage = json['current_page'];
     if (json['data'] != null) {
       json['data'].forEach((element) {
-        search.add(Product.fromJson(element));
+        search?.add(Product.fromJson(element));
       });
     }
     firstPageUrl = json['first_page_url'];

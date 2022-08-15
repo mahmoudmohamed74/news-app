@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, constant_identifier_names
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:first/layout/shop%20app/cubit/cubit.dart';
 import 'package:first/moduels/news_app/web%20view/web_view_screen.dart';
 import 'package:first/shared/cubit/cubit.dart';
+import 'package:first/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -331,3 +333,114 @@ Color chooseToastColor(ToastStates state) {
 
   return color;
 }
+
+Widget buildListProduct(
+  model,
+  context, {
+  bool isOldPrice = true,
+}) =>
+    Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 120,
+        child: Row(
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: [
+                Image(
+                  image: NetworkImage(
+                    model.image!,
+                  ),
+                  width: 120,
+                  height: 120,
+                ),
+                if (model.discount != 0 && isOldPrice)
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(
+                      "DISCOUNT!!!",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    model.name!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      height: 1.1,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Text(
+                        "${model.price.toString()} \$",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          height: 1.1,
+                          color: defaultColor,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      if (model.discount != 0 && isOldPrice)
+                        Text(
+                          "${model.oldPrice.toString()} \$",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            height: 1.1,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          ShopCubit.get(context).changeFavorties(model.id!);
+                          print(model.id!);
+                        },
+                        icon: CircleAvatar(
+                          radius: 15,
+                          backgroundColor:
+                              ShopCubit.get(context).fave[model.id!]!
+                                  ? defaultColor
+                                  : Colors.grey,
+                          child: Icon(
+                            Icons.star_border,
+                            size: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
